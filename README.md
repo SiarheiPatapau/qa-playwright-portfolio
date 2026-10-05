@@ -20,16 +20,6 @@ This repository is a working portfolio: each folder is a small, self-contained p
 - CI is green, not decorative — workflows are committed and visible in the Actions tab.
 - Notes are written down: where a tool helps, where it lies, and what I would do differently.
 
-## Stack
-
-**Languages & test code:** Java, C#, Python, TypeScript, SQL
-**Automation:** Selenium WebDriver, Selenoid, REST Assured, JUnit, NUnit, Playwright (learning)
-**CI/CD:** Jenkins, TeamCity, Bamboo, Harness, GitHub Actions
-**API & data:** Postman, REST Assured, Kafka, MySQL, MS SQL, Oracle, Azure Cosmos DB
-**AI-assisted engineering:** GitHub Copilot, Cursor, MCP integrations (Jira), LLM evaluation tooling
-
 ## Contact
 
 - LinkedIn: [linkedin.com/in/siarhei-patapau](https://www.linkedin.com/in/siarhei-patapau/)
-- Location: Poznań, Poland · open to remote / hybrid
-- Work authorization: full right to work in Poland without a work permit, no employer sponsorship required
