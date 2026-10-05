@@ -22,6 +22,23 @@ npm run check   # type-check only, no build
 8. **`null` / `undefined`** — why NPE-style bugs are caught at compile time under `strict`
 9. **Optional chaining and nullish coalescing** — `?.` and `??`
 
+## Extra: `null` vs `undefined`
+
+`null` and `undefined` are two different kinds of "nothing", and the difference bites in API testing:
+
+- `undefined` — the value was never assigned (JS engine puts it there);
+- `null` — empty on purpose (a human puts it there).
+
+Run `npm start` after the build and look at the `demo-null.ts` section: `JSON.stringify({ a: undefined, b: null })` produces `{"b":null}` — **a key holding `undefined` disappears from JSON, while `null` stays**. In an API response those are two different states: the field is missing entirely, or the field is present and empty.
+
+The `errors-demo/` folder holds a deliberately broken file showing what the compiler refuses to accept:
+
+```bash
+npx tsc --noEmit --strict --ignoreConfig --target ES2022 --module ESNext errors-demo/errors.ts
+```
+
+Expected: `TS2322` (null/undefined not assignable to `string`) and `TS18047` (possibly `null`). It is excluded from the build on purpose — it exists to be read, not compiled.
+
 ## Key takeaways
 
 - **Types are erased.** They exist for the compiler only; there is nothing to inspect at runtime, so `instanceof` on an interface is impossible.
