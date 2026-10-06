@@ -39,6 +39,8 @@ npx tsc --noEmit --strict --ignoreConfig --target ES2022 --module ESNext errors-
 
 Expected: `TS2322` (null/undefined not assignable to `string`) and `TS18047` (possibly `null`). It is excluded from the build on purpose — it exists to be read, not compiled.
 
+`modules-demo/` shows the script-vs-module rule: two files without `import`/`export` collide in the global scope (`TS2393`), and one line of `export {}` fixes it. See [`modules-demo/README.md`](./modules-demo/README.md).
+
 ## Key takeaways
 
 - **Types are erased.** They exist for the compiler only; there is nothing to inspect at runtime, so `instanceof` on an interface is impossible.
