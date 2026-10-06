@@ -1,0 +1,44 @@
+name: CI
+
+# Когда запускать: на каждый push в main и на каждый pull request.
+# paths — чтобы CI не гонялся зря, если изменили что-то не в этом проекте.
+on:
+  push:
+    branches: [main]
+    paths: ["ts-basics/**"]
+  pull_request:
+    paths: ["ts-basics/**"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # все команды выполняются в папке проекта
+    defaults:
+      run:
+        working-directory: ts-basics
+
+    steps:
+      # 1. Забрать код из репозитория
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Поставить Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ts-basics/package-lock.json
+
+      # 3. Установить зависимости строго по package-lock.json (аналог mvn -o)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Проверить типы — упасть раньше, чем запускать тесты
+      - name: Type check
+        run: npm run check
+
+      # 5. Прогнать тесты
+      - name: Run tests
+        run: npm test

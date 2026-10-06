@@ -7,7 +7,9 @@ A single annotated file that walks through TypeScript fundamentals from the pers
 ```bash
 npm install
 npm run build && npm start
-npm run check   # type-check only, no build
+npm run check        # type-check only, no build
+npm test             # run unit tests (Vitest)
+npm run test:watch   # re-run tests on save
 ```
 
 ## What it covers
