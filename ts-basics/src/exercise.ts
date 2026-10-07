@@ -27,16 +27,8 @@ export function statusColor(status: TestStatus): string {
   }
 
   export function formatRun(run: TestRun): string {
-    let duration = "";
-    if (run.durationMs===undefined) {
-        duration = "skipped";
-        return `${run.id} — ${duration}`;
-    } else {
-        duration = `${run.durationMs}ms`;
-        return `${run.id} — ${run.status} (${duration})`;
+    if (run.durationMs === undefined) {
+      return `${run.id} — ${run.status}`;
     }
-}
-
-console.log(formatRun({id: "api-login", status: "passed", durationMs: 120}));
-console.log(failedIds([{id: "api-login", status: "passed", durationMs: 120}, {id: "api-logout", status: "failed", durationMs: 100}]));
-console.log(statusColor("passed"));
+    return `${run.id} — ${run.status} (${run.durationMs}ms)`;
+} 
