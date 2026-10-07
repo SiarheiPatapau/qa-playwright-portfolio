@@ -36,7 +36,3 @@ export function statusColor(status: TestStatus): string {
         return `${run.id} — ${run.status} (${duration})`;
     }
 }
-
-console.log(formatRun({id: "api-login", status: "passed", durationMs: 120}));
-console.log(failedIds([{id: "api-login", status: "passed", durationMs: 120}, {id: "api-logout", status: "failed", durationMs: 100}]));
-console.log(statusColor("passed"));
