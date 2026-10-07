@@ -27,12 +27,8 @@ export function statusColor(status: TestStatus): string {
   }
 
   export function formatRun(run: TestRun): string {
-    let duration = "";
-    if (run.durationMs===undefined) {
-        duration = "skipped";
-        return `${run.id} — ${duration}`;
-    } else {
-        duration = `${run.durationMs}ms`;
-        return `${run.id} — ${run.status} (${duration})`;
+    if (run.durationMs === undefined) {
+      return `${run.id} — ${run.status}`;
     }
-}
+    return `${run.id} — ${run.status} (${run.durationMs}ms)`;
+} 
