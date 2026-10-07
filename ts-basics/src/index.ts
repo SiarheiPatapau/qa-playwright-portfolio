@@ -140,6 +140,16 @@ console.log("=== TypeScript basics ===");
 console.log("userId:", formatId(userId), "| orderId:", formatId(orderId));
 console.log("greet:", greet(sergey), "|", greet({ id: 2, name: "Другая форма" }));
 console.log("status:", status, n, price, big, flag, title, nothing, missing);
-console.log("found fallback:", found?.length ?? 0, "| point:", point, "| ids:", ids, "| counter:", counter, MAX);
+console.log(
+  "found fallback:",
+  found?.length ?? 0,
+  "| point:",
+  point,
+  "| ids:",
+  ids,
+  "| counter:",
+  counter,
+  MAX,
+);
 
 export {};

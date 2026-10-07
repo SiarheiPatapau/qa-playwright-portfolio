@@ -10,6 +10,8 @@ npm run build && npm start
 npm run check        # type-check only, no build
 npm test             # run unit tests (Vitest)
 npm run test:watch   # re-run tests on save
+npm run format       # format everything with Prettier
+npm run format:check # verify formatting (this is what CI runs)
 ```
 
 ## What it covers

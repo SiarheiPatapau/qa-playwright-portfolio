@@ -35,9 +35,9 @@ No errors: `module-b.ts` has an `export`, so it is a **module** with its own sco
 
 ## The rule
 
-| File contains | It is | Where its declarations live |
-|---|---|---|
-| no `import` / `export` | script | global scope — shared with every other script |
+| File contains                    | It is  | Where its declarations live                                     |
+| -------------------------------- | ------ | --------------------------------------------------------------- |
+| no `import` / `export`           | script | global scope — shared with every other script                   |
 | at least one `import` / `export` | module | its own file scope; visible outside only if explicitly exported |
 
 `export {};` exports nothing — it exists purely to mark the file as a module.

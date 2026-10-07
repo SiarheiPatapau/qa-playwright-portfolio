@@ -23,11 +23,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Поставить Node.js
+      # 2. Поставить Node.js — версия берётся из .nvmrc, а не из магической строки
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version-file: ".nvmrc"
           cache: npm
           cache-dependency-path: ts-basics/package-lock.json
 
@@ -35,10 +35,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4. Проверить типы — упасть раньше, чем запускать тесты
+      # 4. Проверить форматирование — самый быстрый шаг, падаем рано
+      - name: Format check
+        run: npm run format:check
+
+      # 5. Проверить типы
       - name: Type check
         run: npm run check
 
-      # 5. Прогнать тесты
+      # 6. Прогнать тесты
       - name: Run tests
         run: npm test

@@ -22,10 +22,15 @@ function withArg(x?: number): void {
 withArg(); // undefined
 
 // ── 3. Ловушка: typeof null — это "object" (исторический баг JS, жив с 1995)
-console.log('3. typeof null =', typeof null, "← не \"null\", запомни это");
+console.log("3. typeof null =", typeof null, '← не "null", запомни это');
 
 // ── 4. Нестрогое и строгое равенство
-console.log("4. null == undefined:", null == undefined, "| null === undefined:", null === undefined);
+console.log(
+  "4. null == undefined:",
+  null == undefined,
+  "| null === undefined:",
+  null === undefined,
+);
 
 // ── 5. Самое важное для QA: как это выглядит в JSON / в API-ответе
 const payload = { a: undefined, b: null, c: 0, d: "" };
