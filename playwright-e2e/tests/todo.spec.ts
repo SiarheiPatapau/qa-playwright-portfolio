@@ -41,13 +41,14 @@ test("completes only the selected todo", async ({ page }) => {
   ]);
   await expect(todoPage.newTodoInput).toHaveValue("");
 
-  await todoPage.completeTodo("Learn Playwright");
+  await todoPage.completeTodo("Write API tests");
 
-  const firstTodo = todoPage.todoItem("Write API tests");
+  const firstTodo = todoPage.todoItem("Learn Playwright");
+  const secondTodo = todoPage.todoItem("Write API tests");
+
   await expect(firstTodo.getByRole("checkbox")).not.toBeChecked();
   await expect(firstTodo).not.toHaveClass(/\bcompleted\b/);
 
-  const secondTodo = todoPage.todoItem("Learn Playwright");
   await expect(secondTodo.getByRole("checkbox")).toBeChecked();
   await expect(secondTodo).toHaveClass(/\bcompleted\b/);
 });
