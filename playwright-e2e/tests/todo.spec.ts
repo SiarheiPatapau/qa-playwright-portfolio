@@ -1,52 +1,77 @@
 import { test, expect } from "@playwright/test";
+import { TodoPage } from "../pages/todo-page";
 
 test("adds a new todo", async ({ page }) => {
-  await page.goto("https://demo.playwright.dev/todomvc/#/");
-  const newTodo = page.getByPlaceholder("What needs to be done?");
-  await newTodo.fill("Learn Playwright");
-  await newTodo.press("Enter");
-  await expect(page.getByTestId("todo-title")).toHaveText("Learn Playwright");
-  await expect(newTodo).toHaveValue("");
+  const todoPage = new TodoPage(page);
+
+  await todoPage.goto();
+  await todoPage.addTodo("Learn Playwright");
+
+  await expect(todoPage.todoTitles).toHaveText("Learn Playwright");
+  await expect(todoPage.newTodoInput).toHaveValue("");
 });
 
 test("marks a todo as completed", async ({ page }) => {
-  await page.goto("https://demo.playwright.dev/todomvc/#/");
-  const newTodo = page.getByPlaceholder("What needs to be done?");
-  await newTodo.fill("Learn Playwright");
-  await newTodo.press("Enter");
-  await expect(page.getByTestId("todo-title")).toHaveText("Learn Playwright");
-  await expect(newTodo).toHaveValue("");
-  const todoItem = page.getByTestId("todo-item");
-  const checkbox = todoItem.getByRole("checkbox");
-  await checkbox.check();
-  await expect(checkbox).toBeChecked();
+  const todoPage = new TodoPage(page);
+
+  await todoPage.goto();
+  await todoPage.addTodo("Learn Playwright");
+
+  await expect(todoPage.todoTitles).toHaveText("Learn Playwright");
+  await expect(todoPage.newTodoInput).toHaveValue("");
+
+  await todoPage.completeTodo("Learn Playwright");
+
+  const todoItem = todoPage.todoItem("Learn Playwright");
+
+  await expect(todoItem.getByRole("checkbox")).toBeChecked();
   await expect(todoItem).toHaveClass(/\bcompleted\b/);
 });
 
 test("completes only the selected todo", async ({ page }) => {
-  await page.goto("https://demo.playwright.dev/todomvc/#/");
-  const newTodo = page.getByPlaceholder("What needs to be done?");
-  await newTodo.fill("Learn Playwright");
-  await newTodo.press("Enter");
-  await newTodo.fill("Write API tests");
-  await newTodo.press("Enter");
-  await expect(newTodo).toHaveValue("");
-  const firstTodo = page
-    .getByTestId("todo-item")
-    .filter({ hasText: "Learn Playwright" });
-  const secondTodo = page
-    .getByTestId("todo-item")
-    .filter({ hasText: "Write API tests" });
-  await expect(firstTodo.getByTestId("todo-title")).toHaveText(
-    "Learn Playwright",
-  );
-  await expect(secondTodo.getByTestId("todo-title")).toHaveText(
-    "Write API tests",
-  );
-  await secondTodo.getByRole("checkbox").check();
-  await expect(firstTodo.getByRole("checkbox")).not.toBeChecked();
-  await expect(secondTodo.getByRole("checkbox")).toBeChecked();
+  const todoPage = new TodoPage(page);
 
+  await todoPage.goto();
+  await todoPage.addTodo("Learn Playwright");
+  await todoPage.addTodo("Write API tests");
+
+  await expect(todoPage.todoTitles).toHaveText([
+    "Learn Playwright",
+    "Write API tests",
+  ]);
+  await expect(todoPage.newTodoInput).toHaveValue("");
+
+  await todoPage.completeTodo("Learn Playwright");
+
+  const firstTodo = todoPage.todoItem("Write API tests");
+  await expect(firstTodo.getByRole("checkbox")).not.toBeChecked();
   await expect(firstTodo).not.toHaveClass(/\bcompleted\b/);
+
+  const secondTodo = todoPage.todoItem("Learn Playwright");
+  await expect(secondTodo.getByRole("checkbox")).toBeChecked();
   await expect(secondTodo).toHaveClass(/\bcompleted\b/);
+});
+
+test("completes the exact todo when titles overlap", async ({ page }) => {
+  const todoPage = new TodoPage(page);
+
+  await todoPage.goto();
+  await todoPage.addTodo("Learn Playwright");
+  await todoPage.addTodo("Learn Playwright advanced");
+
+  await expect(todoPage.todoTitles).toHaveText([
+    "Learn Playwright",
+    "Learn Playwright advanced",
+  ]);
+  await expect(todoPage.newTodoInput).toHaveValue("");
+
+  await todoPage.completeTodo("Learn Playwright");
+
+  const advancedTodo = todoPage.todoItem("Learn Playwright advanced");
+  await expect(advancedTodo.getByRole("checkbox")).not.toBeChecked();
+  await expect(advancedTodo).not.toHaveClass(/\bcompleted\b/);
+
+  const basicTodo = todoPage.todoItem("Learn Playwright");
+  await expect(basicTodo.getByRole("checkbox")).toBeChecked();
+  await expect(basicTodo).toHaveClass(/\bcompleted\b/);
 });
