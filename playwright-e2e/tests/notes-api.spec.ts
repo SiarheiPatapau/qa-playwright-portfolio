@@ -86,8 +86,8 @@ test("shows an API-created note in the UI", async ({ request, page }) => {
     expect(loginResponse.status()).toBe(200);
     const loginBody = await loginResponse.json();
     token = loginBody.data.token;
-    if (!token) {
-      throw new Error("Login response did not contain a token");
+    if (typeof token !== "string" || token.length === 0) {
+      throw new Error("Login response did not contain a valid token");
     }
 
     expect(registerBody.success).toBe(true);
