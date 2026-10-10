@@ -46,6 +46,9 @@ test("registers a new user", async ({ request }) => {
     expect(loginResponse.status()).toBe(200);
     const loginBody = await loginResponse.json();
     token = loginBody.data.token;
+    if (typeof token !== "string" || token.length === 0) {
+      throw new Error("Login response did not contain a valid token");
+    }
     expect(registerResponse.status()).toBe(201);
     const registerBody = await registerResponse.json();
     expect(registerBody.success).toBe(true);
