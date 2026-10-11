@@ -128,7 +128,7 @@ test("shows an API-created note in the UI", async ({ request, page }) => {
     await notesPage.gotoWithToken(token);
     await expect(notesPage.noteCard(title)).toHaveCount(1);
     await expect(notesPage.noteTitle(title)).toHaveText(title);
-    await expect(notesPage.noteDescription(title)).toHaveText("No description");
+    await expect(notesPage.noteDescription(title)).toHaveText(description);
   } finally {
     if (token) {
       try {
