@@ -1,0 +1,55 @@
+name: Playwright CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "playwright-e2e/**"
+      - ".github/workflows/playwright.yml"
+      - ".nvmrc"
+  pull_request:
+    branches: [main]
+    paths:
+      - "playwright-e2e/**"
+      - ".github/workflows/playwright.yml"
+      - ".nvmrc"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: playwright-e2e
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+          cache-dependency-path: playwright-e2e/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run Chromium tests
+        run: npm run test:chromium
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-e2e/playwright-report/
+          retention-days: 7
+          if-no-files-found: warn
