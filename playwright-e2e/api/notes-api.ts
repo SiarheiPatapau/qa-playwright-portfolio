@@ -77,4 +77,15 @@ export class NotesApi {
       },
     });
   }
+
+  getNotes(token?: string) {
+    if (token !== undefined) {
+      return this.request.get(`${this.baseUrl}/notes`, {
+        headers: {
+          "x-auth-token": token,
+        },
+      });
+    }
+    return this.request.get(`${this.baseUrl}/notes`);
+  }
 }

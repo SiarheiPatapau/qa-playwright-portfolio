@@ -149,3 +149,17 @@ test("shows an API-created note in the UI", async ({ request, page }) => {
     }
   }
 });
+
+test("rejects getting notes without an authentication token", async ({
+  request,
+}) => {
+  const api = new NotesApi(request);
+  const response = await api.getNotes();
+  expect(response.status()).toBe(401);
+  const body = await response.json();
+  expect(body.message).toBe(
+    "No authentication token specified in x-auth-token header",
+  );
+  expect(body.success).toBe(false);
+  expect(body.status).toBe(401);
+});
