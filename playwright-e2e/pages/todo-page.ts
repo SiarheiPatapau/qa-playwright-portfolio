@@ -31,4 +31,10 @@ export class TodoPage {
     const checkbox = todoItem.getByRole("checkbox");
     await checkbox.check();
   }
+
+  async uncompleteTodo(title: string): Promise<void> {
+    const todoItem = this.todoItem(title);
+    const checkbox = todoItem.getByRole("checkbox");
+    await checkbox.uncheck();
+  }
 }

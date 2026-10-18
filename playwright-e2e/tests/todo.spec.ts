@@ -1,6 +1,28 @@
 import { test, expect } from "@playwright/test";
 import { TodoPage } from "../pages/todo-page";
 
+test("reactivates only the selected todo", async ({ page }) => {
+  const todoPage = new TodoPage(page);
+
+  await todoPage.goto();
+  await todoPage.addTodo("Learn Playwright");
+  await todoPage.addTodo("Learn Playwright advanced");
+  await todoPage.completeTodo("Learn Playwright");
+  await todoPage.completeTodo("Learn Playwright advanced");
+
+  const todoItem = todoPage.todoItem("Learn Playwright");
+  const advancedTodo = todoPage.todoItem("Learn Playwright advanced");
+  await expect(todoItem.getByRole("checkbox")).toBeChecked();
+  await expect(advancedTodo.getByRole("checkbox")).toBeChecked();
+
+  await todoPage.uncompleteTodo("Learn Playwright");
+
+  await expect(todoItem.getByRole("checkbox")).not.toBeChecked();
+  await expect(todoItem).not.toHaveClass(/\bcompleted\b/);
+  await expect(advancedTodo.getByRole("checkbox")).toBeChecked();
+  await expect(advancedTodo).toHaveClass(/\bcompleted\b/);
+});
+
 test("adds a new todo", async ({ page }) => {
   const todoPage = new TodoPage(page);
 
